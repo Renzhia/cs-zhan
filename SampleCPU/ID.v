@@ -193,12 +193,7 @@ module ID(
     assign sel = inst[2:0];
     
     assign stallreq_for_id = (inst_is_load == 1'b1 && (rs == ex_to_id_bus[36:32] || rt == ex_to_id_bus[36:32] ));
-//    assign inst_stall =  (stallreq_for_id) ? inst : 32'b0; 
-//////////////////////////Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
+
     wire inst_ori, inst_lui, inst_addiu, inst_beq, inst_subu, inst_jr, inst_jal, inst_addu, inst_bne, inst_sll, inst_or,
          inst_lw, inst_sw, inst_xor ,inst_sltu, inst_slt, inst_slti, inst_sltiu, inst_j, inst_add, inst_addi ,inst_sub,
          inst_and , inst_andi, inst_nor, inst_xori, inst_sllv, inst_sra, inst_bgez, inst_bltz, inst_bgtz, inst_blez,
@@ -414,16 +409,16 @@ module ID(
         sel_rf_res,     // 64
         rdata1,         // 63:32        //rs
         rdata2,          // 31:0        //rt
-        lo_hi_r,                        //readÐÅºÅ
-        lo_hi_w,                        //writeÐÅºÅ
+        lo_hi_r,                        //readï¿½Åºï¿½
+        lo_hi_w,                        //writeï¿½Åºï¿½
         lo_o,                           //loÖµ
         hi_o,                            //hiÖµ
         data_ram_read
     };
     
 //    assign id_to_ex_2 = {
-//        lo_hi_r,                        //readÐÅºÅ
-//        lo_hi_w,                        //writeÐÅºÅ
+//        lo_hi_r,                        //readï¿½Åºï¿½
+//        lo_hi_w,                        //writeï¿½Åºï¿½
 //        lo_o,                           //loÖµ
 //        hi_o                            //hiÖµ
 //     };
