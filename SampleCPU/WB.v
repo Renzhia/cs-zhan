@@ -8,27 +8,37 @@ module WB(
     input wire [`MEM_TO_WB_WD-1:0] mem_to_wb_bus,
 
     output wire [`WB_TO_RF_WD-1:0] wb_to_rf_bus,
-
+    
+    output wire [37:0] wb_to_id_bus,
+    
     output wire [31:0] debug_wb_pc,
     output wire [3:0] debug_wb_rf_wen,
     output wire [4:0] debug_wb_rf_wnum,
-    output wire [31:0] debug_wb_rf_wdata 
+    output wire [31:0] debug_wb_rf_wdata,
+    
+    input wire[65:0] hl_mem_to_wb ,
+    output wire[65:0]wb_to_id_wf,
+    output wire[65:0] wb_to_id_hl 
 );
 
     reg [`MEM_TO_WB_WD-1:0] mem_to_wb_bus_r;
+    reg [65:0] hl_mem_to_wb_r;
 
     always @ (posedge clk) begin
         if (rst) begin
             mem_to_wb_bus_r <= `MEM_TO_WB_WD'b0;
+            hl_mem_to_wb_r <= 66'b0;
         end
         // else if (flush) begin
         //     mem_to_wb_bus_r <= `MEM_TO_WB_WD'b0;
         // end
         else if (stall[4]==`Stop && stall[5]==`NoStop) begin
             mem_to_wb_bus_r <= `MEM_TO_WB_WD'b0;
+            hl_mem_to_wb_r <= 66'b0;
         end
         else if (stall[4]==`NoStop) begin
             mem_to_wb_bus_r <= mem_to_wb_bus;
+            hl_mem_to_wb_r <= hl_mem_to_wb;
         end
     end
 
@@ -36,15 +46,50 @@ module WB(
     wire rf_we;
     wire [4:0] rf_waddr;
     wire [31:0] rf_wdata;
-
+    
+    wire w_hi_we;
+    wire w_lo_we;
+    wire [31:0]hi_i;
+    wire [31:0]lo_i;
+     
     assign {
         wb_pc,
         rf_we,
         rf_waddr,
         rf_wdata
     } = mem_to_wb_bus_r;
-
+    
+    assign 
+    {
+        w_hi_we,
+        w_lo_we,
+        hi_i,
+        lo_i
+    } = hl_mem_to_wb_r;
+    
+    assign wb_to_id_wf=
+    {
+        w_hi_we,
+        w_lo_we,
+        hi_i,
+        lo_i
+    };
+    
+    assign wb_to_id_hl=
+    {
+        w_hi_we,
+        w_lo_we,
+        hi_i,
+        lo_i
+    };
+    
+    // assign wb_to_rf_bus = mem_to_wb_bus_r[`WB_TO_RF_WD-1:0];
     assign wb_to_rf_bus = {
+        rf_we,
+        rf_waddr,
+        rf_wdata
+    };
+    assign wb_to_id_bus = {
         rf_we,
         rf_waddr,
         rf_wdata

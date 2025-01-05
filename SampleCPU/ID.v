@@ -15,11 +15,11 @@ module ID(
     
     input wire [37:0] wb_to_id_bus,
     
-    input wire [65:0] ex_to_id_2,
+    input wire [65:0] ex_to_id_hl,
     
-    input wire[65:0] mem_to_id_2, 
+    input wire[65:0] mem_to_id_hl, 
     
-    input wire[65:0] wb_to_id_2, 
+    input wire[65:0] wb_to_id_hl, 
 
     input wire [`IF_TO_ID_WD-1:0] if_to_id_bus,
 
@@ -160,9 +160,9 @@ module ID(
         .ex_to_id_bus(ex_to_id_bus),
         .mem_to_id_bus(mem_to_id_bus),
         .wb_to_id_bus(wb_to_id_bus),
-        .ex_to_id_2(ex_to_id_2),
-        .mem_to_id_2(mem_to_id_2),
-        .wb_to_id_2(wb_to_id_2),
+        .ex_to_id_hl(ex_to_id_hl),
+        .mem_to_id_hl(mem_to_id_hl),
+        .wb_to_id_hl(wb_to_id_hl),
         //write
         .w_hi_we  (w_hi_we),
         .w_lo_we  (w_lo_we),
@@ -193,7 +193,12 @@ module ID(
     assign sel = inst[2:0];
     
     assign stallreq_for_id = (inst_is_load == 1'b1 && (rs == ex_to_id_bus[36:32] || rt == ex_to_id_bus[36:32] ));
-
+//    assign inst_stall =  (stallreq_for_id) ? inst : 32'b0; 
+//////////////////////////ָ������////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
     wire inst_ori, inst_lui, inst_addiu, inst_beq, inst_subu, inst_jr, inst_jal, inst_addu, inst_bne, inst_sll, inst_or,
          inst_lw, inst_sw, inst_xor ,inst_sltu, inst_slt, inst_slti, inst_sltiu, inst_j, inst_add, inst_addi ,inst_sub,
          inst_and , inst_andi, inst_nor, inst_xori, inst_sllv, inst_sra, inst_bgez, inst_bltz, inst_bgtz, inst_blez,
